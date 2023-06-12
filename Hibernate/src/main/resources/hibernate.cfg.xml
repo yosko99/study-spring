@@ -17,10 +17,16 @@
         <property name="connection.password">example</property> <!-- DB Password -->
 
         <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property> <!-- DB Dialect -->
-        <property name="hbm2ddl.auto">create</property> <!-- create / create-drop / update -->
+        <property name="hbm2ddl.auto">update</property> <!-- create / create-drop / update -->
 
         <property name="show_sql">true</property> <!-- Show SQL in console -->
         <property name="format_sql">true</property> <!-- Show SQL formatted -->
+
+<!--        <property name="hibernate.cache.use_second_level_cache">true</property> &lt;!&ndash; Enable second level cache &ndash;&gt;-->
+<!--        <property name="hibernate.cache.use_query_cache">true</property>-->
+<!--        <property name="hibernate.cache.region.factory_class">-->
+<!--            org.hibernate.cache.ehcache.internal.EhcacheRegionFactory-->
+<!--        </property>-->
 
     </session-factory>
 </hibernate-configuration>
