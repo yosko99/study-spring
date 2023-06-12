@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class MyClient {
     private final ICpu cpu;
 
-    public MyClient(@Qualifier("amd") ICpu cpu) {
+    public MyClient(@Qualifier("intel") ICpu cpu) {
         this.cpu = cpu;
     }
 

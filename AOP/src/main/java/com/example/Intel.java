@@ -8,6 +8,6 @@ import org.springframework.stereotype.Component;
 @Qualifier("intel")
 public class Intel implements ICpu {
     public void speed() {
-        System.out.println("AMD 5 GHZ");
+        System.out.println("Intel 5.5 GHZ");
     }
 }
