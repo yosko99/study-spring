@@ -46,8 +46,7 @@ public class AppConfig {
         query.setParameter("id", id);
 
         Student student = query.uniqueResult(); // Only one
-
-//        List<Student> studentList = query.list(); // Multiple
+        List<Student> studentList = query.list(); // Multiple
 
         System.out.println(student);
 
