@@ -1,0 +1,9 @@
+GET http://localhost:8081/students
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.6)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-06-14T144739.404.json
+
+###
+
