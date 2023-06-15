@@ -1,5 +1,6 @@
 package com.practice.controllers;
 
+import com.practice.dtos.StudentDTO;
 import com.practice.entities.Student;
 import com.practice.models.CreateStudentRequest;
 import com.practice.services.StudentService;
@@ -18,7 +19,7 @@ public class StudentController {
     }
 
     @GetMapping
-    public List<Student> getStudents() {
+    public List<StudentDTO> getStudents() {
         return studentService.getStudents();
     }
 
@@ -28,7 +29,7 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public Student getStudentById(@PathVariable("id") int id) throws ResponseStatusException {
+    public StudentDTO getStudentById(@PathVariable("id") int id) throws ResponseStatusException {
         return studentService.getStudentById(id);
     }
 

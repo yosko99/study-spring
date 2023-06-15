@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
+import java.util.Objects;
+
 @Entity
 public class Laptop {
     @Id
@@ -58,6 +60,19 @@ public class Laptop {
 
     @Override
     public String toString() {
-        return "Laptop{" + "id=" + id + ", brand='" + brand + '\'' + ", speed=" + speed + ", student=" + student.toString() + '}';
+        return "Laptop{" + "id=" + id + ", brand='" + brand + '\'' + ", speed=" + speed + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Laptop laptop = (Laptop) o;
+        return id == laptop.id && Objects.equals(brand, laptop.brand) && Objects.equals(speed, laptop.speed) && Objects.equals(student, laptop.student);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, brand, speed, student);
     }
 }

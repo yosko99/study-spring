@@ -1,5 +1,7 @@
 package com.practice.services;
 
+import com.practice.dtos.StudentDTO;
+import com.practice.dtos.StudentDTOMapper;
 import com.practice.entities.Laptop;
 import com.practice.entities.Student;
 import com.practice.interfaces.LaptopRepository;
@@ -10,18 +12,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class StudentService {
     private final StudentRepository studentRepository;
     private final LaptopRepository laptopRepository;
     private final LaptopService laptopService;
+    private final StudentDTOMapper studentDTOMapper;
 
-    public StudentService(StudentRepository studentRepository, LaptopRepository laptopRepository, LaptopService laptopService) {
+    public StudentService(StudentRepository studentRepository, LaptopRepository laptopRepository, LaptopService laptopService, StudentDTOMapper studentDTOMapper) {
         this.studentRepository = studentRepository;
         this.laptopRepository = laptopRepository;
         this.laptopService = laptopService;
+        this.studentDTOMapper = studentDTOMapper;
     }
 
     public Student retrieveStudent(int studentId) {
@@ -37,18 +40,17 @@ public class StudentService {
         return student;
     }
 
-    public List<Student> getStudents() {
-        return studentRepository.findAll();
+    public List<StudentDTO> getStudents() {
+        return studentRepository.findAll()
+                .stream()
+                .map(studentDTOMapper)
+                .toList();
     }
 
-    public Student getStudentById(int id) throws ResponseStatusException {
-        Optional<Student> student = studentRepository.findById(id);
-
-        if (student.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student with id not found");
-        }
-
-        return student.get();
+    public StudentDTO getStudentById(int id) throws ResponseStatusException {
+        return studentRepository.findById(id)
+                .map(studentDTOMapper)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Can't find student with provided id"));
     }
 
     public Student addLaptopToStudent(int studentId, int laptopId) {

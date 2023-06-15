@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Student {
@@ -74,5 +75,18 @@ public class Student {
                 ", age=" + age +
                 ", laptopList=" + laptopList.toString() +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return id == student.id && age == student.age && Objects.equals(name, student.name) && Objects.equals(laptopList, student.laptopList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, age, laptopList);
     }
 }
