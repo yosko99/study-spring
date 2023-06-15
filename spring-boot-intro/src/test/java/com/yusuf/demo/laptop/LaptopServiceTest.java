@@ -1,4 +1,4 @@
-package com.yusuf.demo;
+package com.yusuf.demo.laptop;
 
 import com.practice.entities.Laptop;
 import com.practice.interfaces.LaptopRepository;

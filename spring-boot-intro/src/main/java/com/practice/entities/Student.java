@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,7 +19,7 @@ public class Student {
     private int age;
     @JsonIgnoreProperties("student")
     @OneToMany(mappedBy = "student")
-    private List<Laptop> laptopList;
+    private List<Laptop> laptopList = new ArrayList<>();
 
     public Student(String name, int age, List<Laptop> laptopList) {
         this.name = name;
