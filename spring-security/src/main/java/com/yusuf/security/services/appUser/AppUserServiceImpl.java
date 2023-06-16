@@ -3,7 +3,8 @@ package com.yusuf.security.services.appUser;
 import com.yusuf.security.entities.AppUser;
 import com.yusuf.security.entities.Role;
 import com.yusuf.security.repositories.AppUserRepository;
-import com.yusuf.security.repositories.RoleRepository;
+import com.yusuf.security.requests.CreateUserRequest;
+import com.yusuf.security.services.role.RoleService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ import java.util.List;
 @Slf4j
 public class AppUserServiceImpl implements AppUserService {
     private final AppUserRepository appUserRepository;
-    private final RoleRepository roleRepository;
+    private final RoleService roleService;
 
     @Override
     public AppUser getUser(String username) throws ResponseStatusException {
@@ -37,35 +38,20 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public Role getRole(String name) throws ResponseStatusException {
-        log.info("Fetching role with name {}", name);
-
-        Role role = roleRepository.findByName(name);
-        if (role == null) {
-            throw new ResponseStatusException(
-                    HttpStatusCode.valueOf(404),
-                    "Role with provided name not found name: " + name
-            );
-        }
-
-        return role;
-    }
-
-    @Override
     public void addRoleToUser(String username, String name) throws ResponseStatusException {
         log.info("Adding role with name {} to user with username {}", name, username);
 
         AppUser user = getUser(username);
-        Role role = getRole(name);
+        Role role = roleService.getRole(name);
 
         user.getRoles().add(role);
     }
 
     @Override
-    public AppUser saveUser(AppUser user) throws ResponseStatusException {
+    public AppUser saveUser(CreateUserRequest user) throws ResponseStatusException {
         log.info("Saving user");
 
-        boolean existingUser = appUserRepository.findByUsername(user.getUsername()) != null;
+        boolean existingUser = appUserRepository.findByUsername(user.username()) != null;
 
         if (existingUser) {
             throw new ResponseStatusException(
@@ -74,25 +60,15 @@ public class AppUserServiceImpl implements AppUserService {
             );
         }
 
-        appUserRepository.save(user);
-        return user;
-    }
+        AppUser newUser = new AppUser(
+                user.name(),
+                user.username(),
+                user.password(),
+                user.roles()
+        );
 
-    @Override
-    public Role saveRole(Role role) throws ResponseStatusException {
-        log.info("Saving role");
-
-        boolean existingRole = roleRepository.findByName(role.getName()) != null;
-
-        if (existingRole) {
-            throw new ResponseStatusException(
-                    HttpStatusCode.valueOf(400),
-                    "Role with provided name already exists"
-            );
-        }
-
-        roleRepository.save(role);
-        return role;
+        appUserRepository.save(newUser);
+        return newUser;
     }
 
     @Override
@@ -101,6 +77,4 @@ public class AppUserServiceImpl implements AppUserService {
 
         return appUserRepository.findAll();
     }
-
-
 }
